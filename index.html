@@ -198,8 +198,10 @@
   .zoom-btn:hover{ background:#fff; color:#000; transform:scale(1.1); }
   .zoom-btn:disabled{ opacity:.3; cursor:not-allowed; transform:none; }
   .cute-dot{ width:6px; height:6px; border-radius:50%; background:#fff; display:inline-block; }
-  .glow-line{
-    height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  .cute-badge .dot{ width:8px; height:8px; border-radius:50%; background:#22c55e; box-shadow: 0 0 8px #22c55e; animation: pulseGlow 3s ease-in-out infinite; }
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 1; box-shadow: 0 0 5px #22c55e; }
+    50% { opacity: 0.4; box-shadow: 0 0 15px #22c55e; }
   }
   .back-top{
     position:fixed; bottom:30px; right:30px; z-index:60;
@@ -230,7 +232,7 @@
     display:inline-flex; align-items:center; gap:6px;
     padding:4px 12px; background:rgba(255,255,255,0.05);
     border:1px solid var(--line); border-radius:20px;
-    font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+    font-size:13px; letter-spacing:.1em; text-transform:uppercase;
     font-weight:500; color:var(--muted);
   }
   .cute-badge .dot{ width:6px; height:6px; border-radius:50%; background:#fff; animation: pulse 1.6s ease-in-out infinite; }
@@ -343,7 +345,7 @@
     </a>
     
     <!-- เมนูคอมพิวเตอร์ (ซ่อนบนมือถือ) -->
-    <nav class="hidden md:flex items-center gap-10 text-[12px] tracking-[.12em] uppercase" style="font-weight:500;">
+    <nav class="hidden md:flex items-center gap-10 text-[14px] tracking-[.12em] uppercase" style="font-weight:500;">
       <a href="#" onclick="navigate('home');return false;" class="nav-link active" data-nav="home">สินค้าทั้งหมด</a>
       <a href="#" onclick="navigate('about');return false;" class="nav-link" data-nav="about">เกี่ยวกับร้าน</a>
       <a href="https://www.instagram.com/ronxz_17k/" target="_blank" class="nav-link">Instagram</a>
@@ -400,21 +402,21 @@
     <div class="flex items-center gap-3">
       <div style="font-size:28px;" class="heart-float">🛍️</div>
       <div>
-        <div style="font-weight:500; font-size:15px;">ยินดีต้อนรับสู่ RONXZ STUDIO</div>
-        <div class="text-muted" style="font-weight:400; font-size:12px;">เสื้อผ้ามือสองคัดสภาพ</div>
+        <div style="font-weight:500; font-size:23px;">ยินดีต้อนรับสู่ RONXZ STUDIO</div>
+        <div class="text-muted" style="font-weight:400; font-size:16px;">เสื้อผ้ามือสองคัดสภาพ</div>
       </div>
     </div>
     <div class="flex items-center gap-2 flex-wrap">
-      <span class="cute-badge"><span class="dot"></span> สินค้าใหม่ทุกสัปดาห์</span>
-      <span class="cute-badge">🚚 จัดส่งไว</span>
-      <span class="cute-badge">💯 ของแท้ 100%</span>
+      <span class="cute-badge"><span class="dot"></span> สินค้าคัดเองกับมือ</span>
+      <span class="cute-badge"> จัดส่งไว</span>
+      <span class="cute-badge"> ทุกชิ้นถูกคัดเลือกด้วยความใส่ใจ</span>
     </div>
   </div>
 
   <section class="mb-10 slide-up">
     <div class="section-title">
       <span class="cute-dot"></span>
-      <h2 class="text-[11px] tracking-[.25em] uppercase text-muted" style="font-weight:500;">การจัดส่ง · Shipping</h2>
+      <h2 class="text-[14px] tracking-[.25em] uppercase text-muted" style="font-weight:500;">การจัดส่ง · Shipping</h2>
       <div class="line"></div>
       <span style="font-size:14px;"></span>
     </div>
@@ -428,7 +430,7 @@
         </div>
       </div>
       <div class="shipping-card">
-        <div class="text-5xl mb-3 icon-bounce">🚗</div>
+        <div class="text-5xl mb-3 icon-bounce">🛵</div>
         <h3 class="text-2xl mb-3" style="font-weight:600;">2. จัดส่ง Grab</h3>
         <div class="space-y-1.5 text-base text-muted" style="font-weight:400;">
           <p class="flex items-center gap-2"><span>📍</span> พื้นที่จัดส่ง <span class="text-white" style="font-weight:600;">กรุงเทพฯ - ปทุมธานี</span></p>
@@ -486,7 +488,7 @@
     </div>
     <div class="divider my-10"></div>
     <p>สนใจสินค้าหรือต้องการสอบถามเพิ่มเติม ติดต่อเราได้ที่</p>
-    <a href="https://www.instagram.com/user__141009/" target="_blank" class="btn btn-ig inline-flex">
+a
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
         <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
       </svg>
@@ -499,7 +501,7 @@
 <footer class="border-t border-line mt-20">
   <div class="max-w-7xl mx-auto px-5 md:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] tracking-[.12em] uppercase text-muted" style="font-weight:400;">
     <div>© 2026 RONXZ STUDIO </div>
-    <div>Vintage · Streetwear · Secondhand</div>
+    <div>@</div>
   </div>
 </footer>
 
@@ -888,13 +890,17 @@ function renderProducts(){
   
   // ถ้าเลือก "All" ให้แสดงแยกหมวดหมู่แบบกดปุ่มเลื่อน
   if(currentFilter === 'all'){
-    const categories = ['เสื้อ', 'ฮู้ดดี้', 'กางเกง', 'หมวก', 'เครื่องประดับ'];
+    const categories = ['เสื้อ', 'ฮู้ดดี้', 'กางเกง', 'หมวก', 'เครื่องประดับ', 'เลข']; // เผื่อคุณมีหมวดเลข
     let html = '';
     let hasProducts = false;
     
-    categories.forEach((cat) => {
+    // ถ้ามีหมวดอื่นที่ไม่อยู่ในลิสต์ ให้ดึงมาแสดงด้วย
+    const dynamicCats = [...new Set(products.map(p => p.category))];
+    const allCats = [...new Set([...categories, ...dynamicCats])];
+
+    allCats.forEach((cat) => {
       const catProducts = products.filter(p => p.category === cat);
-      if(catProducts.length === 0) return;
+      if(catProducts.length === 0) return; // ข้ามหมวดที่ไม่มีสินค้า
       hasProducts = true;
       
       // 1. หัวข้อหมวดหมู่
@@ -906,7 +912,7 @@ function renderProducts(){
         </div>
       `;
       
-      // 2. กรอบครอบแถบเลื่อน (เพื่อเอาปุ่มไว้ข้างนอก ไม่ให้บังสินค้า)
+      // 2. กรอบครอบแถบเลื่อน
       html += `
         <div class="col-span-2 md:col-span-3 lg:col-span-4 relative">
           <div id="scroll-${cat}" class="overflow-x-auto hide-scrollbar pb-4">
@@ -915,31 +921,32 @@ function renderProducts(){
       
       // 3. สินค้าในหมวดนี้
       catProducts.forEach((p) => {
+        const productName = p.name || 'สินค้าไม่มีชื่อ'; // ป้องกันชื่อหาย
+        const productPrice = p.price ? p.price.toLocaleString() : '0'; // ป้องกันราคาหาย
+        
         html += `
           <div class="product-card bg-card border border-line cursor-pointer flex-shrink-0 w-[160px] md:w-[200px] lg:w-[220px] ${p.status === 'sold' ? 'grayscale' : ''}" style="border-width:1.5px; border-radius:18px;" onclick="openProduct('${p.id}')">
             <div class="relative aspect-[4/5] overflow-hidden bg-[#0d0d0d]" style="border-radius:18px 18px 0 0;">
-              <img src="${p.images[0] || ''}" alt="${p.name}" class="product-img w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'img-fallback\\'>No Image</div>'" />
+              <img src="${p.images[0] || ''}" alt="${productName}" class="product-img w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'img-fallback\\'>No Image</div>'" />
               ${p.images.length > 1 ? `<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5" style="border-radius:6px; font-weight:400;">+${p.images.length-1}</div>` : ''}
             </div>
             <div class="p-3">
               <div class="text-[12px] tracking-[.15em] uppercase text-muted mb-1" style="font-weight:500;">${p.category}</div>
-              <h3 class="text-[14px] leading-snug mb-2 truncate" style="font-weight:500;">${p.name}</h3>
+              <h3 class="text-[14px] leading-snug mb-2 truncate" style="font-weight:500;">${productName}</h3>
               <div class="flex items-center justify-between">
-                <div class="text-[15px]" style="font-weight:600;">฿${p.price.toLocaleString()}</div>
-                <div class="text-[9px] tracking-[.12em] uppercase ${p.status==='available'?'text-green-400 pulse-dot':'text-muted'}" style="font-weight:500;">${p.status==='available'?'●':'○'}</div>
+                <div class="text-[15px]" style="font-weight:600;">฿${productPrice}</div>
+                <div class="text-[9px] tracking-[.12em] uppercase ${p.status==='available'?'text-green-400 pulse-dot':'text-muted'}" style="font-weight:500;">${p.status==='available'?'● Available':'○ Sold'}</div>
               </div>
             </div>
           </div>
         `;
       });
       
-      // 4. ปิดกรอบ แล้วใส่ปุ่มเลื่อนซ้าย-ขวา (เฉพาะคอมฯ md:flex / มือถือ hidden)
+      // 4. ปิดกรอบ แล้วใส่ปุ่มเลื่อนซ้าย-ขวา (เฉพาะคอมฯ)
       html += `
             </div>
           </div>
-          <!-- ปุ่มเลื่อนซ้าย (โชว์เฉพาะคอมฯ) -->
           <button onclick="scrollHorizontally('scroll-${cat}', -1)" class="hidden md:flex absolute top-[40%] -left-4 w-10 h-10 rounded-full bg-[#0A0A0A]/90 border border-white/20 items-center justify-center text-white text-2xl hover:bg-white hover:text-black transition-all z-10" style="font-weight: 300;">‹</button>
-          <!-- ปุ่มเลื่อนขวา (โชว์เฉพาะคอมฯ) -->
           <button onclick="scrollHorizontally('scroll-${cat}', 1)" class="hidden md:flex absolute top-[40%] -right-4 w-10 h-10 rounded-full bg-[#0A0A0A]/90 border border-white/20 items-center justify-center text-white text-2xl hover:bg-white hover:text-black transition-all z-10" style="font-weight: 300;">›</button>
         </div>
       `;
@@ -970,22 +977,25 @@ function renderProducts(){
   }
   empty.classList.add('hidden');
   
-  grid.innerHTML = list.map((p, i) => `
+  grid.innerHTML = list.map((p, i) => {
+    const productName = p.name || 'สินค้าไม่มีชื่อ';
+    const productPrice = p.price ? p.price.toLocaleString() : '0';
+    return `
     <div class="product-card bg-card border border-line fade-in cursor-pointer ${p.status === 'sold' ? 'grayscale' : ''}" style="animation-delay:${i*0.04}s; border-width:1.5px; border-radius:18px;" onclick="openProduct('${p.id}')">
       <div class="relative aspect-[4/5] overflow-hidden bg-[#0d0d0d]" style="border-radius:18px 18px 0 0;">
-        <img src="${p.images[0] || ''}" alt="${p.name}" class="product-img w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'img-fallback\\'>No Image</div>'" />
+        <img src="${p.images[0] || ''}" alt="${productName}" class="product-img w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'img-fallback\\'>No Image</div>'" />
         ${p.images.length > 1 ? `<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5" style="border-radius:6px; font-weight:400;">+${p.images.length-1}</div>` : ''}
       </div>
       <div class="p-3.5">
         <div class="text-[14px] tracking-[.2em] uppercase text-muted mb-1" style="font-weight:500;">${p.category}</div>
-        <h3 class="text-[15px] leading-snug mb-2 line-clamp-2 min-h-[2.5em]" style="font-weight:500;">${p.name}</h3>
+        <h3 class="text-[15px] leading-snug mb-2 line-clamp-2 min-h-[2.5em]" style="font-weight:500;">${productName}</h3>
         <div class="flex items-center justify-between">
-          <div class="text-[15px]" style="font-weight:500;">฿${p.price.toLocaleString()}</div>
+          <div class="text-[15px]" style="font-weight:500;">฿${productPrice}</div>
           <div class="text-[9px] tracking-[.12em] uppercase ${p.status==='available'?'text-green-400 pulse-dot':'text-muted'}" style="font-weight:500;">${p.status==='available'?'● Available':'○ Sold'}</div>
         </div>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 document.getElementById('filterBar').addEventListener('click', (e)=>{
   const btn = e.target.closest('.filter-btn');
