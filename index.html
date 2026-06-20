@@ -72,7 +72,7 @@
   .btn-ig:hover{ filter:brightness(1.1); transform:translateY(-2px); box-shadow:0 10px 30px rgba(220,39,67,.4); }
   .pill{
     padding:8px 18px; border:1.5px solid var(--line);
-    font-size:11px; letter-spacing:.08em; cursor:pointer;
+    font-size:15px; letter-spacing:.08em; cursor:pointer;
     transition:all .25s cubic-bezier(.4,0,.2,1); background:transparent; color:#fff;
     font-family:'Kanit',sans-serif; font-weight:500; border-radius:30px;
     position:relative; overflow:hidden;
@@ -350,17 +350,17 @@
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="shipping-card">
-        <div class="text-4xl mb-3 icon-bounce">📦</div>
-        <h3 class="text-lg mb-3" style="font-weight:600;">1. จัดส่งไปรษณีย์</h3>
-        <div class="space-y-1.5 text-sm text-muted" style="font-weight:400;">
+        <div class="text-5xl mb-3 icon-bounce">📦</div>
+        <h3 class="text-2xl mb-3" style="font-weight:600;">1. จัดส่งไปรษณีย์</h3>
+        <div class="space-y-1.5 text-base text-muted" style="font-weight:400;">
           <p class="flex items-center gap-2"><span>💰</span> ค่าบริการ <span class="text-white" style="font-weight:600;">40 บาท / ออเดอร์</span></p>
           <p class="flex items-center gap-2"><span>⏱️</span> ระยะเวลาจัดส่ง <span class="text-white" style="font-weight:600;">1 - 4 วัน</span></p>
         </div>
       </div>
       <div class="shipping-card">
-        <div class="text-4xl mb-3 icon-bounce">🚗</div>
-        <h3 class="text-lg mb-3" style="font-weight:600;">2. จัดส่ง Grab</h3>
-        <div class="space-y-1.5 text-sm text-muted" style="font-weight:400;">
+        <div class="text-5xl mb-3 icon-bounce">🚗</div>
+        <h3 class="text-2xl mb-3" style="font-weight:600;">2. จัดส่ง Grab</h3>
+        <div class="space-y-1.5 text-base text-muted" style="font-weight:400;">
           <p class="flex items-center gap-2"><span>📍</span> พื้นที่จัดส่ง <span class="text-white" style="font-weight:600;">กรุงเทพฯ - ปทุมธานี</span></p>
           <p class="flex items-center gap-2"><span>💸</span> ค่าบริการ <span class="text-white" style="font-weight:600;">ตามระยะทาง</span></p>
         </div>
@@ -827,8 +827,8 @@ function renderProducts(){
         ${p.images.length > 1 ? `<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5" style="border-radius:6px; font-weight:400;">+${p.images.length-1}</div>` : ''}
       </div>
       <div class="p-3.5">
-        <div class="text-[9px] tracking-[.2em] uppercase text-muted mb-1" style="font-weight:500;">${p.category}</div>
-        <h3 class="text-[13px] leading-snug mb-2 line-clamp-2 min-h-[2.5em]" style="font-weight:500;">${p.name}</h3>
+        <div class="text-[14px] tracking-[.2em] uppercase text-muted mb-1" style="font-weight:500;">${p.category}</div>
+        <h3 class="text-[15px] leading-snug mb-2 line-clamp-2 min-h-[2.5em]" style="font-weight:500;">${p.name}</h3>
         <div class="flex items-center justify-between">
           <div class="text-[15px]" style="font-weight:500;">฿${p.price.toLocaleString()}</div>
           <div class="text-[9px] tracking-[.12em] uppercase ${p.status==='available'?'text-green-400 pulse-dot':'text-muted'}" style="font-weight:500;">${p.status==='available'?'● Available':'○ Sold'}</div>
