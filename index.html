@@ -280,6 +280,9 @@
     vertical-align: middle;
   }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  /* ซ่อน Scrollbar แต่ยังเลื่อนได้ */
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
 </head>
 <body>
@@ -807,6 +810,78 @@ function showToast(msg){
 function renderProducts(){
   const grid = document.getElementById('productGrid');
   const empty = document.getElementById('emptyState');
+  
+  // ถ้าเลือก "All" ให้แสดงแยกหมวดหมู่แบบกดปุ่มเลื่อน
+  if(currentFilter === 'all'){
+    const categories = ['เสื้อ', 'ฮู้ดดี้', 'กางเกง', 'หมวก', 'เครื่องประดับ'];
+    let html = '';
+    let hasProducts = false;
+    
+    categories.forEach((cat) => {
+      const catProducts = products.filter(p => p.category === cat);
+      if(catProducts.length === 0) return;
+      hasProducts = true;
+      
+      // 1. หัวข้อหมวดหมู่
+      html += `
+        <div class="col-span-2 md:col-span-3 lg:col-span-4 mt-8 mb-4 flex items-center gap-3 px-1">
+          <span class="cute-dot"></span>
+          <h2 class="text-lg md:text-xl" style="font-weight:600; letter-spacing:.02em;">${cat}</h2>
+          <span class="text-[10px] tracking-[.15em] uppercase text-muted px-2 py-1 bg-white/5" style="font-weight:500; border-radius: 8px;">${catProducts.length} ชิ้น</span>
+        </div>
+      `;
+      
+      // 2. กรอบครอบแถบเลื่อน (เพื่อเอาปุ่มไว้ข้างนอก ไม่ให้บังสินค้า)
+      html += `
+        <div class="col-span-2 md:col-span-3 lg:col-span-4 relative">
+          <div id="scroll-${cat}" class="overflow-x-auto hide-scrollbar pb-4">
+            <div class="flex gap-4" style="min-width: max-content;">
+      `;
+      
+      // 3. สินค้าในหมวดนี้
+      catProducts.forEach((p) => {
+        html += `
+          <div class="product-card bg-card border border-line cursor-pointer flex-shrink-0 w-[160px] md:w-[200px] lg:w-[220px] ${p.status === 'sold' ? 'grayscale' : ''}" style="border-width:1.5px; border-radius:18px;" onclick="openProduct('${p.id}')">
+            <div class="relative aspect-[4/5] overflow-hidden bg-[#0d0d0d]" style="border-radius:18px 18px 0 0;">
+              <img src="${p.images[0] || ''}" alt="${p.name}" class="product-img w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'img-fallback\\'>No Image</div>'" />
+              ${p.images.length > 1 ? `<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5" style="border-radius:6px; font-weight:400;">+${p.images.length-1}</div>` : ''}
+            </div>
+            <div class="p-3">
+              <div class="text-[12px] tracking-[.15em] uppercase text-muted mb-1" style="font-weight:500;">${p.category}</div>
+              <h3 class="text-[14px] leading-snug mb-2 truncate" style="font-weight:500;">${p.name}</h3>
+              <div class="flex items-center justify-between">
+                <div class="text-[15px]" style="font-weight:600;">฿${p.price.toLocaleString()}</div>
+                <div class="text-[9px] tracking-[.12em] uppercase ${p.status==='available'?'text-green-400 pulse-dot':'text-muted'}" style="font-weight:500;">${p.status==='available'?'●':'○'}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      // 4. ปิดกรอบ แล้วใส่ปุ่มเลื่อนซ้าย-ขวา (เฉพาะคอมฯ md:flex / มือถือ hidden)
+      html += `
+            </div>
+          </div>
+          <!-- ปุ่มเลื่อนซ้าย (โชว์เฉพาะคอมฯ) -->
+          <button onclick="scrollHorizontally('scroll-${cat}', -1)" class="hidden md:flex absolute top-[40%] -left-4 w-10 h-10 rounded-full bg-[#0A0A0A]/90 border border-white/20 items-center justify-center text-white text-2xl hover:bg-white hover:text-black transition-all z-10" style="font-weight: 300;">‹</button>
+          <!-- ปุ่มเลื่อนขวา (โชว์เฉพาะคอมฯ) -->
+          <button onclick="scrollHorizontally('scroll-${cat}', 1)" class="hidden md:flex absolute top-[40%] -right-4 w-10 h-10 rounded-full bg-[#0A0A0A]/90 border border-white/20 items-center justify-center text-white text-2xl hover:bg-white hover:text-black transition-all z-10" style="font-weight: 300;">›</button>
+        </div>
+      `;
+    });
+    
+    if(!hasProducts){
+      grid.innerHTML = '';
+      empty.classList.remove('hidden');
+      return;
+    }
+    
+    empty.classList.add('hidden');
+    grid.innerHTML = html;
+    return;
+  }
+  
+  // ถ้าเลือกหมวดเฉพาะ หรือ available/sold ให้แสดงแบบกริดปกติ
   let list = [...products];
   
   if(currentFilter === 'available') list = list.filter(p => p.status === 'available');
@@ -821,8 +896,8 @@ function renderProducts(){
   empty.classList.add('hidden');
   
   grid.innerHTML = list.map((p, i) => `
-    <div class="product-card bg-card border border-line fade-in cursor-pointer ${p.status === 'sold' ? 'grayscale' : ''}" style="animation-delay:${i*0.04}s; border-width:1.5px;" onclick="openProduct('${p.id}')">
-      <div class="relative aspect-[4/5] overflow-hidden bg-[#0d0d0d]">
+    <div class="product-card bg-card border border-line fade-in cursor-pointer ${p.status === 'sold' ? 'grayscale' : ''}" style="animation-delay:${i*0.04}s; border-width:1.5px; border-radius:18px;" onclick="openProduct('${p.id}')">
+      <div class="relative aspect-[4/5] overflow-hidden bg-[#0d0d0d]" style="border-radius:18px 18px 0 0;">
         <img src="${p.images[0] || ''}" alt="${p.name}" class="product-img w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'img-fallback\\'>No Image</div>'" />
         ${p.images.length > 1 ? `<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5" style="border-radius:6px; font-weight:400;">+${p.images.length-1}</div>` : ''}
       </div>
@@ -837,7 +912,6 @@ function renderProducts(){
     </div>
   `).join('');
 }
-
 document.getElementById('filterBar').addEventListener('click', (e)=>{
   const btn = e.target.closest('.filter-btn');
   if(!btn) return;
@@ -1496,6 +1570,14 @@ window.addEventListener('scroll', () => {
 });
 
 // INIT
+// ฟังก์ชันกดปุ่มเลื่อนสินค้าแนวนอน
+function scrollHorizontally(elementId, direction) {
+  const container = document.getElementById(elementId);
+  if (!container) return;
+  // คำนวณระยะเลื่อน 80% ของความกว้างหน้าจอที่มองเห็น
+  const scrollAmount = container.clientWidth * 0.8 * direction;
+  container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+}
 loadProducts();
 checkSecretAdminAccess();
 updateAuthUI();
