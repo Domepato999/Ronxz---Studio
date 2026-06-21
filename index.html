@@ -1287,7 +1287,7 @@ window.addEventListener('touchmove', function(e){
   const diff = touchStartY - e.touches[0].clientY;
   if(diff > 0){
     // swipe ขึ้น = เข้าร้าน (จำกัดสะสมต่อรอบ)
-    scrollProgress += Math.min(diff * 0.32, SCROLL_MAX_PER_TICK);
+    scrollProgress += Math.min(diff * 0.37, SCROLL_MAX_PER_TICK);
   } else {
     // swipe ลง = กลับมา (จำกัดสะสมต่อรอบ)
     scrollProgress -= Math.min(Math.abs(diff) * 0.12, SCROLL_MAX_PER_TICK);
