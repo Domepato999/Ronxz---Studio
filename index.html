@@ -1189,7 +1189,7 @@ function showToast(msg){
 // ============================================================
 let landingEntered = false;
 let scrollProgress = 0; // 0 = ยังไม่เลื่อน, 1000 = เข้าร้านแล้ว
-const SCROLL_THRESHOLD = 800; // ต้องเลื่อนสะสมเยอะถึงจะเข้าร้าน
+const SCROLL_THRESHOLD = 250; // ต้องเลื่อนสะสมเยอะถึงจะเข้าร้าน
 const SCROLL_MAX_PER_TICK = 15; // จำกัดสะสมต่อรอบ → เลื่อนเร็วก็ไม่กระโดด
 
 function enterShop(){
@@ -1287,7 +1287,7 @@ window.addEventListener('touchmove', function(e){
   const diff = touchStartY - e.touches[0].clientY;
   if(diff > 0){
     // swipe ขึ้น = เข้าร้าน (จำกัดสะสมต่อรอบ)
-    scrollProgress += Math.min(diff * 0.12, SCROLL_MAX_PER_TICK);
+    scrollProgress += Math.min(diff * 0.22, SCROLL_MAX_PER_TICK);
   } else {
     // swipe ลง = กลับมา (จำกัดสะสมต่อรอบ)
     scrollProgress -= Math.min(Math.abs(diff) * 0.12, SCROLL_MAX_PER_TICK);
