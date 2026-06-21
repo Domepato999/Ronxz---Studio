@@ -18,7 +18,7 @@
     --pink:#FFE4E1;
   }
   *{ -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-  html,body{ background:var(--bg); color:var(--text); font-family:'Kanit',sans-serif; font-weight:400; margin:0; padding:0; font-size: 16px; }
+  html,body{ background:var(--bg); color:var(--text); font-family:'Kanit',sans-serif; font-weight:400; margin:0; padding:0; font-size: 16px; scroll-behavior:smooth; }
   body{
     background-image: 
       radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px),
@@ -50,7 +50,7 @@
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
     padding:14px 28px; border:1.5px solid #fff; color:#fff; background:transparent;
-    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    font-size:14px; letter-spacing:.12em; text-transform:uppercase;
     transition:all .3s cubic-bezier(.4,0,.2,1); cursor:pointer;
     font-family:'Kanit',sans-serif; font-weight:500; border-radius:16px;
     position:relative; overflow:hidden;
@@ -136,13 +136,17 @@
   }
   .marquee-track{
     display:flex; white-space:nowrap;
-    animation: marquee 30s linear infinite;
+    animation: marquee 55s linear infinite;
     font-family: 'Kanit', sans-serif;
     font-weight: 500;
     font-size: 15px;
     letter-spacing: 0.03em;
+    width: max-content;
   }
-  .marquee-track span{ 
+  .marquee-group{
+    display:flex; white-space:nowrap; flex-shrink:0;
+  }
+  .marquee-group span{ 
     padding: 0 40px; 
     flex-shrink:0; 
     display: inline-flex; 
@@ -236,6 +240,13 @@
     font-weight:500; color:var(--muted);
   }
   .cute-badge .dot{ width:6px; height:6px; border-radius:50%; background:#fff; animation: pulse 1.6s ease-in-out infinite; }
+  /* ✏️ Skeleton Loading — กรอบเทาๆ ตอนรอโหลดสินค้า */
+  .skeleton-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px; }
+  .skel-img{ width:100%; aspect-ratio:1; background:rgba(255,255,255,0.04); border-radius:10px; animation:shimmer 1.5s ease-in-out infinite; }
+  .skel-line{ height:12px; background:rgba(255,255,255,0.04); border-radius:6px; margin-top:10px; animation:shimmer 1.5s ease-in-out infinite; }
+  .skel-long{ width:70%; }
+  .skel-short{ width:40%; }
+  @keyframes shimmer{ 0%,100%{opacity:1;} 50%{opacity:0.4;} }
   .sparkle{ position:absolute; pointer-events:none; }
   @keyframes sparkle{ 
     0%{ transform:scale(0) rotate(0); opacity:1; }
@@ -317,21 +328,165 @@
     opacity: 1;
     pointer-events: auto;
   }
+  /* LANDING PAGE */
+  .landing{
+    position:fixed; inset:0; z-index:9999;
+    background:#0A0A0A;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+    transition: transform 1.8s cubic-bezier(.25,.46,.45,.94), opacity 1.5s ease, visibility 1.8s ease;
+    overflow:hidden;
+    will-change: transform, opacity;
+  }
+  .landing.hidden{
+    transform:translateY(-100%); opacity:0; visibility:hidden; pointer-events:none;
+  }
+  /* Gradient background เคลื่อนไหว */
+  .landing::before{
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(255,228,225,0.04) 0%, transparent 50%);
+    animation: landingBgShift 8s ease-in-out infinite alternate;
+  }
+  @keyframes landingBgShift{
+    0%{ transform:scale(1) rotate(0deg); opacity:1; }
+    100%{ transform:scale(1.2) rotate(3deg); opacity:.6; }
+  }
+  /* Particles ลอย */
+  .landing-particles{
+    position:absolute; inset:0; overflow:hidden; pointer-events:none;
+  }
+  .landing-particle{
+    position:absolute; width:2px; height:2px; background:#fff; border-radius:50%;
+    animation: particleFloat linear infinite;
+    opacity:0;
+  }
+  @keyframes particleFloat{
+    0%{ transform:translateY(100vh) scale(0); opacity:0; }
+    10%{ opacity:1; }
+    90%{ opacity:1; }
+    100%{ transform:translateY(-20vh) scale(1); opacity:0; }
+  }
+  /* Brand name */
+  .landing-brand{
+    font-size:clamp(36px,8vw,72px); font-weight:700; letter-spacing:.08em;
+    color:#fff; text-transform:uppercase; position:relative; z-index:2;
+    animation: landingFadeIn 1.2s ease both;
+  }
+  .landing-brand span{ font-weight:300; color:#A1A1A1; }
+  /* Tagline */
+  .landing-tagline{
+    font-size:clamp(13px,2vw,16px); color:#A1A1A1; letter-spacing:.25em;
+    text-transform:uppercase; margin-top:8px; position:relative; z-index:2;
+    animation: landingFadeIn 1.2s ease 0.3s both;
+  }
+  .landing-tagline .char{
+    display:inline-block;
+    animation: charReveal 0.5s ease both;
+  }
+  @keyframes charReveal{
+    from{ opacity:0; transform:translateY(10px) rotateX(90deg); }
+    to{ opacity:1; transform:translateY(0) rotateX(0); }
+  }
+  /* เส้นคั่น */
+  .landing-line{
+    width:0; height:1px; background:linear-gradient(90deg, transparent, #fff, transparent);
+    margin:28px 0; position:relative; z-index:2;
+    animation: lineExpand 1s ease 0.8s both;
+  }
+  @keyframes lineExpand{
+    from{ width:0; opacity:0; }
+    to{ width:120px; opacity:1; }
+  }
+  /* Scroll hint */
+  .landing-scroll{
+    position:relative; z-index:2; margin-top:60px;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    animation: landingFadeIn 1.2s ease 1s both;
+    cursor:pointer;
+  }
+  .landing-scroll-text{
+    font-size:11px; letter-spacing:.25em; text-transform:uppercase;
+    color:#A1A1A1; font-weight:400;
+  }
+  .landing-scroll-arrow{
+    width:24px; height:24px; border-right:1.5px solid #fff; border-bottom:1.5px solid #fff;
+    transform:rotate(45deg); animation: scrollBounce 2s ease-in-out infinite;
+  }
+  @keyframes scrollBounce{
+    0%,100%{ transform:rotate(45deg) translateY(0); opacity:.4; }
+    50%{ transform:rotate(45deg) translateY(8px); opacity:1; }
+  }
+  .landing-scroll:hover .landing-scroll-arrow{
+    animation-duration:0.5s;
+  }
+  .landing-scroll:hover .landing-scroll-text{
+    color:#fff;
+  }
+  /* วงแหวนหมุน */
+  .landing-ring{
+    position:absolute; width:500px; height:500px; border-radius:50%;
+    border:1px solid rgba(255,255,255,0.04);
+    animation: ringRotate 20s linear infinite;
+    z-index:1;
+  }
+  .landing-ring:nth-child(2){ width:600px; height:600px; animation-duration:30s; animation-direction:reverse; border-color:rgba(255,228,225,0.04); }
+  .landing-ring:nth-child(3){ width:700px; height:700px; animation-duration:40s; }
+  @keyframes ringRotate{
+    from{ transform:rotate(0deg); }
+    to{ transform:rotate(360deg); }
+  }
+  @keyframes landingFadeIn{
+    from{ opacity:0; transform:translateY(20px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
 </style>
 </head>
 <body>
 
+<!-- LANDING PAGE -->
+<div class="landing" id="landingPage">
+  <!-- วงแหวนหมุน 3 ชั้น -->
+  <div class="landing-ring"></div>
+  <div class="landing-ring"></div>
+  <div class="landing-ring"></div>
+  <!-- Particles ลอย -->
+  <div class="landing-particles" id="landingParticles"></div>
+  <!-- เนื้อหาหลัก -->
+  <div class="landing-brand">RONXZ<span> STUDIO</span></div>
+  <div class="landing-tagline" id="landingTagline">Vintage & Streetwear</div>
+  <div class="landing-line"></div>
+  <!-- Scroll hint แทนปุ่ม -->
+  <div class="landing-scroll" onclick="enterShop()">
+    <span class="landing-scroll-text">Scroll to Enter</span>
+    <div class="landing-scroll-arrow"></div>
+  </div>
+</div>
+
 <!-- MARQUEE SHIPPING BAR -->
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
-    <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
-    <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
-    <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
-    <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
-    <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
-    <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
-    <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
+    <div class="marquee-group">
+      <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
+      <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
+      <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
+      <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
+      <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
+      <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
+      <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
+      <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
+    </div>
+    <!-- สำเนาเหมือนกันทุกประการ เพื่อให้เลื่อน infinity ได้ไม่มีที่สิ้นสุด -->
+    <div class="marquee-group">
+      <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
+      <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
+      <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
+      <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
+      <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
+      <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
+      <span>📦 จัดส่งไปรษณีย์ ค่าบริการ 40฿/ออเดอร์ · ระยะเวลา 1-4 วัน</span>
+      <span>🚗 จัดส่ง Grab พื้นที่ กรุงเทพฯ - ปทุมธานี · ค่าบริการตามระยะทาง</span>
+    </div>
   </div>
 </div>
 
@@ -348,7 +503,7 @@
     <nav class="hidden md:flex items-center gap-10 text-[14px] tracking-[.12em] uppercase" style="font-weight:500;">
       <a href="#" onclick="navigate('home');return false;" class="nav-link active" data-nav="home">สินค้าทั้งหมด</a>
       <a href="#" onclick="navigate('about');return false;" class="nav-link" data-nav="about">เกี่ยวกับร้าน</a>
-      <a href="https://www.instagram.com/ronxz_17k/" target="_blank" class="nav-link">Instagram</a>
+      <a href="https://www.instagram.com/user__141009/?hl=en/" target="_blank" class="nav-link">Instagram</a>
       <button onclick="openCart()" class="nav-link relative">
         🛒 ตะกร้า <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center" style="display:none;">0</span>
       </button>
@@ -381,7 +536,7 @@
     <a href="#" onclick="navigate('about');toggleMobileMenu();return false;" class="flex items-center gap-3 hover:text-white transition">
       <span class="cute-dot"></span> เกี่ยวกับร้าน
     </a>
-    <a href="https://www.instagram.com/ronxz_17k/" target="_blank" class="flex items-center gap-3 hover:text-white transition">
+    <a href="https://www.instagram.com/ronxz_17k/?hl=en/" target="_blank" class="flex items-center gap-3 hover:text-white transition">
       <span class="cute-dot"></span> Instagram
     </a>
     
@@ -409,7 +564,7 @@
     <div class="flex items-center gap-2 flex-wrap">
       <span class="cute-badge"><span class="dot"></span> สินค้าคัดเองกับมือ</span>
       <span class="cute-badge"> จัดส่งไว🚀</span>
-      <span class="cute-badge"> Dm</span>
+      <span class="cute-badge" style="text-transform:none;">Dm</span>
     </div>
   </div>
 
@@ -443,7 +598,7 @@
   <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
     <div>
       <h1 class="text-3xl md:text-4xl" style="font-weight:500; letter-spacing:.02em;">Collection</h1>
-      <p class="text-muted text-sm mt-1" style="font-weight:400;">เสื้อผ้ามือสองคัดสภาพ · เสื้อผ้าวินเทจมือสอง</p>
+      <p class="text-muted text-sm mt-1" style="font-weight:400;">เสื้อผ้ามือสองคัดสภาพ · เสื้อผ้ามือสอง</p>
     </div>
     <div class="flex items-center gap-2 flex-wrap" id="filterBar">
       <button class="pill filter-btn active" data-filter="all">All</button>
@@ -457,7 +612,17 @@
     </div>
   </div>
 
-  <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5"></div>
+  <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+    <!-- ✏️ Skeleton Loading: กรอบเทาๆ ขึ้นตอนรอโหลดสินค้า -->
+    <div class="skeleton-card" id="skeleton1"><div class="skel-img"></div><div class="skel-line skel-long"></div><div class="skel-line skel-short"></div></div>
+    <div class="skeleton-card" id="skeleton2"><div class="skel-img"></div><div class="skel-line skel-long"></div><div class="skel-line skel-short"></div></div>
+    <div class="skeleton-card" id="skeleton3"><div class="skel-img"></div><div class="skel-line skel-long"></div><div class="skel-line skel-short"></div></div>
+    <div class="skeleton-card" id="skeleton4"><div class="skel-img"></div><div class="skel-line skel-long"></div><div class="skel-line skel-short"></div></div>
+    <div class="skeleton-card hidden md:block" id="skeleton5"><div class="skel-img"></div><div class="skel-line skel-long"></div><div class="skel-line skel-short"></div></div>
+    <div class="skeleton-card hidden md:block" id="skeleton6"><div class="skel-img"></div><div class="skel-line skel-long"></div><div class="skel-line skel-short"></div></div>
+    <div class="skeleton-card hidden lg:block" id="skeleton7"><div class="skel-img"></div><div class="skel-line skel-long"></div><div class="skel-line skel-short"></div></div>
+    <div class="skeleton-card hidden lg:block" id="skeleton8"><div class="skel-img"></div><div class="skel-line skel-long"></div><div class="skel-line skel-short"></div></div>
+  </div>
 
   <div id="emptyState" class="hidden text-center py-20 text-muted">
     <p class="text-lg" style="font-weight:400;">ยังไม่มีสินค้า</p>
@@ -487,19 +652,29 @@
       </div>
     </div>
     <div class="divider my-10"></div>
-    <p>สนใจสินค้าหรือต้องการสอบถามเพิ่มเติม ติดต่อเราได้ที่</p>
-a
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
-        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
-      </svg>
-      @RONXZ_17K
-    </a>
+    <p style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">สนใจสินค้าหรือต้องการสอบถามเพิ่มเติม ติดต่อเราได้ที่
+      <!-- ✏️ แก้โลโก้ IG ที่นี่: ขนาด(width/height), สี(stop-color) -->
+      <a href="https://www.instagram.com/shezzx_17k/?hl=en/" target="_blank" style="text-decoration:none; display:inline-flex; align-items:center; transition:opacity .2s ease; cursor:pointer;" onmouseover="this.style.opacity='0.7';" onmouseout="this.style.opacity='1';">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" style="flex-shrink:0;">
+          <defs>
+            <linearGradient id="igGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#f09433"/>
+              <stop offset="25%" style="stop-color:#e6683c"/>
+              <stop offset="50%" style="stop-color:#dc2743"/>
+              <stop offset="75%" style="stop-color:#cc2366"/>
+              <stop offset="100%" style="stop-color:#bc1888"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#igGrad)" d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+        </svg>
+      </a>
+    </p>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer class="border-t border-line mt-20">
-  <div class="max-w-7xl mx-auto px-5 md:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] tracking-[.12em] uppercase text-muted" style="font-weight:400;">
+  <div class="max-w-7xl mx-auto px-5 md:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] tracking-[.12em] text-muted" style="font-weight:400;">
     <div>© 2026 RONXZ STUDIO </div>
     <div>@Ronxz_17K</div>
   </div>
@@ -522,39 +697,39 @@ a
       </div>
       <div class="p-6 md:p-10 flex flex-col">
         <button onclick="closeModal()" class="self-end text-muted text-2xl leading-none mb-4 hover:text-white hover:rotate-90 transition" style="font-weight:300; background:none; border:none; cursor:pointer; transition:all .3s;">×</button>
-        <div class="text-[10px] tracking-[.25em] uppercase text-muted mb-3" id="modalCategory" style="font-weight:500;"></div>
+        <div class="text-[16px] tracking-[.25em] uppercase text-muted mb-3" id="modalCategory" style="font-weight:500;"></div>
         <h1 class="text-2xl md:text-3xl mb-3" id="modalName" style="font-weight:500; line-height:1.3;"></h1>
         <div class="flex items-center gap-4 mb-5">
           <div class="text-2xl" id="modalPrice" style="font-weight:500;"></div>
-          <div class="text-[10px] tracking-[.05em] text-muted flex items-center gap-1" id="modalViews" style="font-weight:400;"></div>
+          <div class="text-[12px] tracking-[.05em] text-muted flex items-center gap-1" id="modalViews" style="font-weight:400;"></div>
         </div>
         <div class="divider mb-5"></div>
         <div class="space-y-3 text-sm" style="font-weight:400;">
           <div class="flex justify-between border-b border-line pb-2">
-            <span class="text-muted text-[10px] tracking-[.15em] uppercase" style="font-weight:500;">สถานะ</span>
+            <span class="text-muted text-[16px] tracking-[.15em] uppercase" style="font-weight:500;">สถานะ</span>
             <span id="modalStatus" class="text-[10px] tracking-[.15em] uppercase" style="font-weight:500;"></span>
           </div>
           <div class="flex justify-between border-b border-line pb-2">
-            <span class="text-muted text-[10px] tracking-[.15em] uppercase" style="font-weight:500;">ไซส์</span>
+            <span class="text-muted text-[16px] tracking-[.15em] uppercase" style="font-weight:500;">ไซส์</span>
             <span id="modalSize"></span>
           </div>
           <div class="flex justify-between border-b border-line pb-2">
-            <span class="text-muted text-[10px] tracking-[.15em] uppercase" style="font-weight:500;">สภาพ</span>
+            <span class="text-muted text-[16px] tracking-[.15em] uppercase" style="font-weight:500;">สภาพ</span>
             <span id="modalCondition"></span>
           </div>
           <div class="flex justify-between border-b border-line pb-2">
-            <span class="text-muted text-[10px] tracking-[.15em] uppercase" style="font-weight:500;">ตำหนิ</span>
+            <span class="text-muted text-[16px] tracking-[.15em] uppercase" style="font-weight:500;">ตำหนิ</span>
             <span id="modalFlaw" class="text-right max-w-[60%]"></span>
           </div>
         </div>
         <div class="mt-5">
-          <div class="text-[10px] tracking-[.15em] uppercase text-muted mb-2" style="font-weight:500;">รายละเอียด</div>
+          <div class="text-[12px] tracking-[.15em] uppercase text-muted mb-2" style="font-weight:500;">รายละเอียด</div>
           <p class="text-sm text-muted leading-relaxed" id="modalDesc" style="font-weight:400;"></p>
         </div>
         <div class="mt-auto pt-8">
           <div class="flex gap-3">
-            <button id="addCartBtn" onclick="addToCart()" class="btn flex-1" style="border-radius:16px;">🛒 ใส่ตะกร้า</button>
-            <button id="orderBtn" onclick="orderViaInstagram()" class="btn btn-ig flex-1" style="border-radius:16px;">📷 ซื้อชิ้นนี้</button>
+            <button id="addCartBtn" onclick="addToCart()" class="btn flex-1" style="border-radius:16px;">       ใส่ตะกร้า</button>
+            <button id="orderBtn" onclick="orderViaInstagram()" class="btn btn-ig flex-1" style="border-radius:16px;">สั่งซื้อสินค้า</button>
           </div>
           <p class="text-center text-[10px] tracking-[.1em] uppercase text-muted mt-3" style="font-weight:400;">กดสั่งซื้อเพื่อเปิด DM ของเรา</p>
         </div>
@@ -577,25 +752,77 @@ a
 </div>
 
 <!-- IG LOGIN MODAL -->
+<!-- IG LOGIN MODAL — ระบบยืนยันตัวตน 3 ขั้นตอน -->
+<!-- IG LOGIN MODAL — ยืนยันตัวตนผ่าน DM -->
 <div id="igLoginModal" class="modal" onclick="if(event.target===this) closeIgLogin()">
   <div class="bg-[#0A0A0A] border border-line max-w-md w-full p-8 relative" style="border-radius:22px;">
     <button onclick="closeIgLogin()" class="absolute top-4 right-4 text-muted text-2xl leading-none hover:text-white" style="background:none;border:none;cursor:pointer;">×</button>
-    <div class="text-center mb-6">
-      <div class="text-4xl mb-2"></div>
-      <h2 class="text-2xl" style="font-weight:500;">เข้าสู่ระบบด้วย Instagram</h2>
-      <p class="text-muted text-sm mt-2" style="font-weight:400;">ใส่ Username Instagram ของคุณ<br>เพื่อเข้าสู่ระบบและซื้อสินค้า</p>
-    </div>
-    <div class="space-y-4">
-      <div>
-        <label class="text-[10px] tracking-[.15em] uppercase text-muted block mb-2" style="font-weight:500;">IG Username</label>
-        <input type="text" id="igUsernameInput" placeholder="●●●●●" autocomplete="off" />
+    
+    <!-- ขั้นตอนที่ 1: ใส่ Username -->
+    <div id="igStep1">
+      <div class="text-center mb-6">
+        <div class="text-4xl mb-3">📸</div>
+        <h2 class="text-2xl" style="font-weight:500;">เข้าสู่ระบบด้วย Instagram</h2>
+        <p class="text-muted text-sm mt-2" style="font-weight:400;">กรอกชื่อผู้ใช้ IG จริงของคุณ</p>
       </div>
-      <button onclick="submitIgLogin()" class="btn btn-ig w-full mt-2">เข้าสู่ระบบ</button>
-      <p class="text-[10px] text-muted text-center" style="font-weight:400;">* ไม่ต้องใส่รหัสผ่าน เพื่อความปลอดภัยของคุณ</p>
+      <div class="mb-4">
+        <label class="text-[10px] tracking-[.15em] uppercase text-muted block mb-2" style="font-weight:500;">ชื่อผู้ใช้ Instagram</label>
+        <input type="text" id="igUsernameInput" placeholder="@your_username" onkeypress="if(event.key==='Enter') requestVerifyCode()" />
+      </div>
+      <button onclick="requestVerifyCode()" id="igCheckBtn" class="btn btn-ig w-full">📩 ขอรหัสยืนยัน</button>
+    </div>
+    
+    <!-- ขั้นตอนที่ 2: DM รหัสไปหาร้าน -->
+    <div id="igStep2" class="hidden">
+      <div class="text-center mb-6">
+        <div class="text-4xl mb-3">🔐</div>
+        <h2 class="text-xl" style="font-weight:500;">ยืนยันตัวตน</h2>
+      </div>
+      <div class="bg-card border border-line p-5 mb-5 text-center" style="border-radius:16px;">
+        <p class="text-sm text-muted mb-2" style="font-weight:400;">รหัสยืนยันของคุณ</p>
+        <div class="text-4xl py-3" id="verifyCodeDisplay" style="font-weight:700; letter-spacing:.3em;">------</div>
+      </div>
+      <div class="bg-card border border-line p-4 mb-5 text-left" style="border-radius:14px;">
+        <p class="text-sm mb-2" style="font-weight:500;">📋 ขั้นตอน:</p>
+        <ol class="text-sm text-muted space-y-1.5 pl-4" style="font-weight:400; list-style:decimal;">
+          <li>กดปุ่ม <span class="text-white">"DM รหัสไปหาร้าน"</span> ด้านล่าง</li>
+          <li>Instagram จะเปิดขึ้นมา → กด <span class="text-white">ส่งข้อความ</span></li>
+          <li>รอเจ้าของร้านอนุมัติ (1-5 นาที)</li>
+          <li>กดปุ่ม <span class="text-white">"ตรวจสอบการอนุมัติ"</span></li>
+        </ol>
+      </div>
+      <div class="space-y-3">
+        <button onclick="sendDmToShop()" class="btn btn-ig w-full">💬 DM รหัสไปหาร้าน</button>
+        <button onclick="checkApproval()" id="igVerifyBtn" class="btn btn-solid w-full">✅ ตรวจสอบการอนุมัติ</button>
+      </div>
+    </div>
+    
+    <!-- ขั้นตอนที่ 3: สำเร็จ -->
+    <div id="igStep3" class="hidden text-center">
+      <div class="text-5xl mb-4">🎉</div>
+      <h2 class="text-2xl mb-2" style="font-weight:500;">เข้าสู่ระบบสำเร็จ!</h2>
+      <p class="text-muted" style="font-weight:400;">ยินดีต้อนรับ <span class="text-white" id="welcomeUsername" style="font-weight:500;">@username</span></p>
     </div>
   </div>
+</div><!-- CHECKOUT QR MODAL -->
+<div id="checkoutModal" class="modal" onclick="if(event.target===this) closeCheckoutModal()">
+  <div class="bg-[#0A0A0A] border border-line max-w-md w-full p-8 relative" style="border-radius:22px;">
+    <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-muted text-2xl leading-none hover:text-white" style="background:none;border:none;cursor:pointer;">×</button>
+    <div class="text-center mb-6">
+      <h2 class="text-2xl" style="font-weight:500;">สแกนเพื่อชำระเงิน</h2>
+      <p class="text-muted text-sm mt-2" style="font-weight:400;">แสกน QR Code ด้านล่างเพื่อโอนเงิน<br>ผ่านแอพธนาคารหรือพร้อมเพย์</p>
+    </div>
+    <div class="bg-white p-4 mb-6 flex justify-center" style="border-radius:16px;">
+      <img src="https://promptpay.io/0812345678.png" alt="QR Code" class="w-64 h-64 object-contain" id="qrCodeImage" /> <!-- เปลี่ยนเบอร์ตรงนี้ด้วย -->
+    </div>
+    <div class="mb-6 text-center p-4 bg-card border border-line" style="border-radius:14px;">
+      <p class="text-[10px] tracking-[.15em] uppercase text-muted" style="font-weight:500;">ยอดที่ต้องชำระ</p>
+      <p class="text-3xl mt-1" id="checkoutTotal" style="font-weight:600;">฿0</p>
+    </div>
+    <button onclick="confirmCheckout()" class="btn btn-ig w-full">📸 แจ้งชำระเงินผ่าน IG</button>
+    <p class="text-center text-[10px] text-muted mt-3" style="font-weight:400;">* หลังโอนเงิน กดปุ่มด้านบนเพื่อแจ้งร้านค้า</p>
+  </div>
 </div>
-
 <!-- CART MODAL -->
 <div id="cartModal" class="modal" onclick="if(event.target===this) closeCart()">
   <div class="bg-[#0A0A0A] border border-line max-w-lg w-full p-8 relative max-h-[90vh] overflow-y-auto" style="border-radius:22px;">
@@ -624,20 +851,20 @@ a
   <div class="bg-[#0A0A0A] border border-line max-w-md w-full p-8" style="border-radius:22px;">
     <div class="text-center mb-6">
       <div class="text-4xl mb-2 heart-float">🔐</div>
-      <h2 class="text-2xl mb-1" style="font-weight:500;">Admin Login</h2>
+      <h2 class="text-3xl mb-1" style="font-weight:500;">Admin Login</h2>
       <p class="text-muted text-sm" style="font-weight:400;">เข้าสู่ระบบเพื่อจัดการสินค้า</p>
     </div>
     <div class="space-y-4">
       <div>
-        <label class="text-[10px] tracking-[.15em] uppercase text-muted block mb-2" style="font-weight:500;">👤 Username</label>
+        <label class="text-[13px] tracking-[.15em] uppercase text-muted block mb-2" style="font-weight:500;">👤 Username</label>
         <input type="text" id="adminUser" placeholder="admin" autocomplete="off" />
       </div>
       <div>
-        <label class="text-[10px] tracking-[.15em] uppercase text-muted block mb-2" style="font-weight:500;">🔑 Password</label>
+        <label class="text-[13px] tracking-[.15em] uppercase text-muted block mb-2" style="font-weight:500;">🔑 Password</label>
         <input type="password" id="adminPass" placeholder="••••••" />
       </div>
       <button onclick="adminLogin()" class="btn btn-solid w-full mt-2">✨ เข้าสู่ระบบ</button>
-      <p class="text-[10px] text-muted text-center" style="font-weight:400;">Default: admin / ronxz2025</p>
+      <p class="text-[10px] text-muted text-center" style="font-weight:400;"></p>
     </div>
   </div>
 </div>
@@ -719,6 +946,10 @@ a
           <label class="text-[10px] tracking-[.15em] uppercase text-muted block mb-2" style="font-weight:500;">สภาพสินค้า</label>
           <input type="text" id="pCondition" placeholder="  9/10" />
         </div>
+                 <div>
+          <label class="text-[10px] tracking-[.15em] uppercase text-muted block mb-2" style="font-weight:500;">สต็อกสินค้า (ชิ้น)</label>
+          <input type="number" id="pStock" placeholder="เช่น 1" />
+        </div>
         <div class="md:col-span-2">
           <label class="text-[10px] tracking-[.15em] uppercase text-muted block mb-2" style="font-weight:500;">ตำหนิ (ถ้าไม่มีใส่ "ไม่มี")</label>
           <input type="text" id="pFlaw" placeholder="  เช่น รอยเปื้อนเล็กน้อยที่แขน, รอยถลอกที่คอเสื้อ, ไม่มี" />
@@ -740,6 +971,13 @@ a
       </div>
     </div>
 
+    <!-- รายการรออนุมัติ IG -->
+    <div class="mb-4 flex items-center gap-2">
+      <span class="cute-dot"></span>
+      <h2 class="text-lg" style="font-weight:500;">🔐 รออนุมัติเข้าสู่ระบบ</h2>
+    </div>
+    <div id="pendingUsersList" class="mb-8"></div>
+
     <div class="mb-4 flex items-center gap-2">
       <span class="cute-dot"></span>
       <h2 class="text-lg" style="font-weight:500;">📦 สินค้าทั้งหมด (<span id="adminCount">0</span>)</h2>
@@ -755,13 +993,14 @@ a
 // ============================================================
 // CONFIGURATION - ใช้ Google Apps Script (ไม่จำกัดจำนวนครั้ง)
 // ============================================================
-const INSTAGRAM_URL = 'https://www.instagram.com/user__141009/';
+const INSTAGRAM_URL = 'https://www.instagram.com/ronxz_17k/?hl=en/';
+const QR_CODE_URL = 'https://promptpay.io/0835168172.png'; // << เปลี่ยนเบอร์ 0812345678 เป็นเบอร์คุณ
 const ADMIN_USER = 'dev';
 const ADMIN_PASS = 'dev';
 const STORAGE_KEY = 'ronxz_products_v3';
 
 // ใส่ URL ของ Google Apps Script ที่นี่ (ต้องลงท้ายด้วย /exec เสมอ)
-const API_URL = 'https://script.google.com/macros/s/AKfycbyBz32wBt3qd5tXV2FivVF0RGyI7DE39U9NBudw1llaICinukIzK0DGCP3abri5QnQRzg/exec'; 
+const API_URL = 'https://script.google.com/macros/s/AKfycbzanWRWKKClhx2fxIdaKT0FxRxOUhjdThxsSWV0SOnlhkg8JDvyovroHi9WkLnyF9pu/exec'; 
 const USE_API = API_URL !== '' && !API_URL.includes('ใส่URLของคุณตรงนี้');
 
 let products = [];
@@ -790,6 +1029,19 @@ const defaultProducts = [
 // DATA HANDLING (ใช้ Google Apps Script)
 // ============================================================
 async function loadProducts(){
+  // ✅ 1) โหลดจาก localStorage ก่อน → แสดงทันที (ไม่ต้องรอเซิร์ฟเวอร์)
+  const cached = localStorage.getItem(STORAGE_KEY);
+  if(cached){
+    try {
+      products = JSON.parse(cached);
+      renderProducts();
+      if(!document.getElementById('adminPanel').classList.contains('hidden')){
+        renderAdminList(); updateStats(); renderTopViewed();
+      }
+    } catch(e){}
+  }
+
+  // ✅ 2) ดึงข้อมูลล่าสุดจากเซิร์ฟเวอร์เบื้องหลัง
   if(USE_API){
     try {
       const res = await fetch(API_URL);
@@ -806,16 +1058,23 @@ async function loadProducts(){
         flaw: p.flaw || '-',
         desc: p.desc || '',
         images: p.images ? p.images.split('\n').map(u => u.trim()).filter(u => u) : [],
-        views: Number(p.views) || 0
+        views: Number(p.views) || 0,
+        stock: Number(p.stock) || 1
       }));
+      // บันทึกลง localStorage ไว้ใช้ครั้งหน้า
+      saveLocalProducts();
     } catch (error) {
       console.error('Load API failed, using local:', error);
-      showToast('⚠️ โหลดข้อมูลออนไลน์ไม่สำเร็จ ใช้ข้อมูลตัวอย่างแทน');
-      loadLocalProducts();
+      if(!cached) {
+        showToast('⚠️ โหลดข้อมูลออนไลน์ไม่สำเร็จ ใช้ข้อมูลตัวอย่างแทน');
+        loadLocalProducts();
+      }
     }
   } else {
-    loadLocalProducts();
+    if(!cached) loadLocalProducts();
   }
+
+  // ✅ 3) อัปเดตหน้าจอด้วยข้อมูลล่าสุด
   renderProducts();
   if(!document.getElementById('adminPanel').classList.contains('hidden')){
     renderAdminList();
@@ -824,25 +1083,69 @@ async function loadProducts(){
   }
 }
 
-function loadLocalProducts(){
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if(stored){
-    try {
-      products = JSON.parse(stored);
-      products.forEach(p => {
-        if(typeof p.views !== 'number') p.views = 0;
-        if(!p.flaw) p.flaw = '-';
+// ============================================================
+// แอดมิน: ระบบอนุมัติ IG Login
+// ============================================================
+async function loadPendingUsers() {
+  try {
+    const res = await fetch(API_URL + '?action=getPendingUsers');
+    const data = await res.json();
+    const container = document.getElementById('pendingUsersList');
+    if (!container) return;
+    
+    const pending = data.filter(u => !u.verified);
+    const approved = data.filter(u => u.verified);
+    
+    let html = '';
+    
+    if (pending.length > 0) {
+      html += '<div class="text-sm mb-3" style="font-weight:500;">⏳ รออนุมัติ (' + pending.length + ')</div>';
+      pending.forEach(u => {
+        html += '<div class="bg-card border border-yellow-900 p-4 mb-3 flex items-center justify-between" style="border-radius:14px; border-width:1.5px;">' +
+          '<div>' +
+            '<div class="text-sm" style="font-weight:500;">@' + u.username + '</div>' +
+            '<div class="text-[11px] text-muted">รหัส: ' + u.code + ' · ' + u.createdAt + '</div>' +
+          '</div>' +
+          '<button onclick="approveIgUser(\'' + u.username + '\')" class="text-[10px] tracking-[.08em] uppercase border border-green-800 text-green-400 px-3 py-1.5 hover:bg-green-600 hover:text-white hover:border-green-600 transition" style="border-radius:10px; font-weight:500; background:transparent; cursor:pointer;">✅ อนุมัติ</button>' +
+        '</div>';
       });
-    } catch(e){
-      products = defaultProducts;
-      saveLocalProducts();
     }
-  } else {
-    products = defaultProducts;
-    saveLocalProducts();
+    
+    if (approved.length > 0) {
+      html += '<div class="text-sm mb-3 mt-4" style="font-weight:500;">✅ อนุมัติแล้ว (' + approved.length + ')</div>';
+      approved.forEach(u => {
+        html += '<div class="bg-card border border-green-900 p-3 mb-2 flex items-center justify-between" style="border-radius:12px; opacity:0.6;">' +
+          '<div>' +
+            '<div class="text-sm" style="font-weight:500;">@' + u.username + '</div>' +
+            '<div class="text-[10px] text-muted">อนุมัติแล้ว</div>' +
+          '</div>' +
+        '</div>';
+      });
+    }
+    
+    if (pending.length === 0 && approved.length === 0) {
+      html = '<p class="text-muted text-sm" style="font-weight:400;">ยังไม่มีคนขอเข้าสู่ระบบ</p>';
+    }
+    
+    container.innerHTML = html;
+  } catch (e) {
+    console.error('Failed to load pending users', e);
   }
 }
 
+async function approveIgUser(username) {
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'approveUser', username: username })
+    });
+    showToast('✅ อนุมัติ @' + username + ' แล้ว');
+    await loadPendingUsers();
+  } catch (e) {
+    showToast('❌ อนุมัติไม่สำเร็จ');
+  }
+}
 function saveLocalProducts(){
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
@@ -882,11 +1185,139 @@ function showToast(msg){
 }
 
 // ============================================================
+// LANDING PAGE — หน้าหลักเข้าร้าน (Scroll to Enter)
+// ============================================================
+let landingEntered = false;
+let scrollProgress = 0; // 0 = ยังไม่เลื่อน, 1000 = เข้าร้านแล้ว
+const SCROLL_THRESHOLD = 200; // ต้องเลื่อนสะสมเยอะถึงจะเข้าร้าน
+const SCROLL_MAX_PER_TICK = 15; // จำกัดสะสมต่อรอบ → เลื่อนเร็วก็ไม่กระโดด
+
+function enterShop(){
+  if(landingEntered) return;
+  landingEntered = true;
+  document.getElementById('landingPage').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+// อัปเดตตำแหน่ง Landing ตาม scroll progress
+function updateLandingPosition(){
+  const el = document.getElementById('landingPage');
+  if(!el || landingEntered) return;
+  // จำกัดค่า 0-THRESHOLD
+  scrollProgress = Math.max(0, Math.min(scrollProgress, SCROLL_THRESHOLD));
+  // ยิ่ง scroll มาก ยิ่งเลื่อนขึ้น + จาง
+  const progress = scrollProgress / SCROLL_THRESHOLD;
+  const translateY = -progress * 100; // เลื่อนขึ้นเต็ม 100vh ตอนสุด
+  const opacity = 1 - progress; // จางหายไปเลยตอนสุด
+  el.style.transform = 'translateY(' + translateY + 'vh)';
+  el.style.opacity = opacity;
+  
+  // ถ้าเลื่อนเกิน threshold ก็เข้าร้านเลย
+  if(progress >= 1){
+    enterShop();
+  }
+}
+
+// สร้าง particles ลอย
+function createParticles(){
+  const container = document.getElementById('landingParticles');
+  if(!container) return;
+  for(let i = 0; i < 30; i++){
+    const p = document.createElement('div');
+    p.className = 'landing-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (6 + Math.random() * 10) + 's';
+    p.style.animationDelay = (Math.random() * 8) + 's';
+    p.style.width = (1 + Math.random() * 3) + 'px';
+    p.style.height = p.style.width;
+    p.style.opacity = 0;
+    container.appendChild(p);
+  }
+}
+
+// Tagline letter-by-letter animation
+function animateTagline(){
+  const el = document.getElementById('landingTagline');
+  if(!el) return;
+  const text = el.textContent;
+  el.innerHTML = '';
+  text.split('').forEach((char, i) => {
+    const span = document.createElement('span');
+    span.className = 'char';
+    span.textContent = char === ' ' ? '\u00A0' : char;
+    span.style.animationDelay = (0.4 + i * 0.04) + 's';
+    el.appendChild(span);
+  });
+}
+
+createParticles();
+animateTagline();
+
+// ล้างค่าเก่า (จากเวอร์ชันก่อนหน้า)
+localStorage.removeItem('ronxz_entered');
+sessionStorage.removeItem('ronxz_entered');
+
+// ล็อค scroll ตอนอยู่หน้า landing
+document.body.style.overflow = 'hidden';
+
+// Scroll (คอม) — เลื่อนลงเข้าร้าน, เลื่อนขึ้นกลับมา
+window.addEventListener('wheel', function(e){
+  if(landingEntered) return;
+  e.preventDefault();
+  if(e.deltaY > 0){
+    // เลื่อนลง = เข้าร้าน (จำกัดสะสมต่อรอบ)
+    scrollProgress += Math.min(Math.abs(e.deltaY) * 0.15, SCROLL_MAX_PER_TICK);
+  } else {
+    // เลื่อนขึ้น = กลับมา (จำกัดสะสมต่อรอบ)
+    scrollProgress -= Math.min(Math.abs(e.deltaY) * 0.15, SCROLL_MAX_PER_TICK);
+  }
+  updateLandingPosition();
+}, {passive: false});
+
+// Touch (มือถือ) — swipe ขึ้นเข้าร้าน, swipe ลงกลับมา
+let touchStartY = 0;
+window.addEventListener('touchstart', function(e){
+  if(landingEntered) return;
+  touchStartY = e.touches[0].clientY;
+}, {passive: true});
+
+window.addEventListener('touchmove', function(e){
+  if(landingEntered) return;
+  const diff = touchStartY - e.touches[0].clientY;
+  if(diff > 0){
+    // swipe ขึ้น = เข้าร้าน (จำกัดสะสมต่อรอบ)
+    scrollProgress += Math.min(diff * 0.27, SCROLL_MAX_PER_TICK);
+  } else {
+    // swipe ลง = กลับมา (จำกัดสะสมต่อรอบ)
+    scrollProgress -= Math.min(Math.abs(diff) * 0.12, SCROLL_MAX_PER_TICK);
+  }
+  touchStartY = e.touches[0].clientY;
+  updateLandingPosition();
+}, {passive: true});
+
+// กดปุ่มลูกศร / Space / Enter
+window.addEventListener('keydown', function(e){
+  if(landingEntered) return;
+  if(e.key === 'ArrowDown' || e.key === ' '){
+    scrollProgress += 10; // เข้าร้าน (ช้าลง)
+    updateLandingPosition();
+  }
+  if(e.key === 'ArrowUp'){
+    scrollProgress -= 10; // กลับมา (ช้าลง)
+    updateLandingPosition();
+  }
+  if(e.key === 'Enter') enterShop();
+});
+
+// ============================================================
 // RENDER PRODUCTS
 // ============================================================
 function renderProducts(){
   const grid = document.getElementById('productGrid');
   const empty = document.getElementById('emptyState');
+  
+  // ✅ ลบ skeleton loading ออกเมื่อสินค้าโหลดเสร็จ
+  grid.querySelectorAll('.skeleton-card').forEach(s => s.remove());
   
   // ถ้าเลือก "All" ให้แสดงแยกหมวดหมู่แบบกดปุ่มเลื่อน
   if(currentFilter === 'all'){
@@ -1189,6 +1620,7 @@ function openAdminPanel(){
   document.getElementById('adminPanel').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
   loadProducts();
+  loadPendingUsers();
   showToast(USE_API ? '☁️ เชื่อมต่อกับ Google Apps Script แล้ว' : '💾 ใช้ข้อมูลในเครื่อง (Local)');
 }
 function logoutAdmin(){
@@ -1300,7 +1732,8 @@ async function saveProduct(){
     condition: document.getElementById('pCondition').value.trim() || '-',
     flaw: document.getElementById('pFlaw').value.trim() || 'ไม่มี',
     desc: document.getElementById('pDesc').value.trim(),
-    images: finalImages.join('\n') 
+    images: finalImages.join('\n'),
+    stock: Number(document.getElementById('pStock').value) || 1
   };
   
   const saveBtn = document.querySelector('button[onclick="saveProduct()"]');
@@ -1358,6 +1791,7 @@ async function saveProduct(){
 
 function editProduct(id){
   const p = products.find(x => x.id === id);
+  document.getElementById('pStock').value = p.stock || 1;
   if(!p) return;
   editingId = id;
   document.getElementById('formTitle').textContent = '✏️ แก้ไขสินค้า';
@@ -1445,11 +1879,33 @@ function updateAuthUI() {
   const btn = document.getElementById('loginBtn');
   const btnM = document.getElementById('loginBtnMobile');
   if(igUser) {
-    if(btn) btn.innerHTML = 'สวัสดี (' + igUser + ')';
-    if(btnM) btnM.textContent = 'สวัสดี (' + igUser + ')';
+    if(btn) btn.innerHTML = 'สวัสดี @' + igUser;
+    if(btnM) btnM.textContent = 'สวัสดี @' + igUser;
   } else {
     if(btn) btn.innerHTML = 'เข้าสู่ระบบ IG';
     if(btnM) btnM.textContent = 'เข้าสู่ระบบ IG';
+  }
+}
+
+// ============================================================
+// LOAD CART FROM SERVER — ดึงตะกร้าจากเซิร์ฟเวอร์เมื่อเปิดเว็บ
+// ============================================================
+async function loadCartFromServer() {
+  if(!igUser || !USE_API) return;
+  
+  try {
+    const res = await fetch(API_URL + '?action=getCart&username=' + encodeURIComponent(igUser));
+    const data = await res.json();
+    if (data.length > 0 && data[0].cart) {
+      const serverCart = data[0].cart.split(',').filter(id => id);
+      // รวมตะกร้า local กับ server (ไม่ซ้ำ)
+      const merged = [...new Set([...serverCart, ...cart])];
+      cart = merged;
+      localStorage.setItem('ronxz_cart', JSON.stringify(cart));
+      updateAuthUI();
+    }
+  } catch (e) {
+    console.error('Failed to load cart from server:', e);
   }
 }
 
@@ -1478,80 +1934,188 @@ function closeIgLogin() {
   document.body.style.overflow = '';
 }
 
-async function submitIgLogin() {
+// ============================================================
+// IG LOGIN — ยืนยันตัวตนผ่าน DM Instagram
+// ============================================================
+let pendingIgUser = null;
+let currentVerifyCode = null;
+
+// ขั้นตอนที่ 1: ขอรหัสยืนยัน
+async function requestVerifyCode() {
   let username = document.getElementById('igUsernameInput').value.trim();
   if (username.startsWith('@')) username = username.substring(1);
-  const igRegex = /^[A-Za-z0-9_.]+$/;
+  const igRegex = /^[A-Za-z0-9_.]{1,30}$/;
 
   if (!username || !igRegex.test(username)) {
-    showToast('❌ ชื่อผู้ใช้ IG ไม่ถูกต้อง');
+    showToast('❌ ชื่อผู้ใช้ไม่ถูกต้อง (ภาษาอังกฤษ ตัวเลข จุด _ เท่านั้น)');
     return;
   }
 
-  igUser = username;
+  const btn = document.getElementById('igCheckBtn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<span class="loader"></span> กำลังสร้างรหัส...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'generateCode', username: username })
+    });
+    const data = await res.json();
+
+    if (data.success && data.code) {
+      pendingIgUser = username;
+      currentVerifyCode = data.code;
+      document.getElementById('verifyCodeDisplay').textContent = currentVerifyCode;
+      document.getElementById('igStep1').classList.add('hidden');
+      document.getElementById('igStep2').classList.remove('hidden');
+      showToast('📩 สร้างรหัสยืนยันสำเร็จ กรุณา DM ไปหาร้าน');
+    } else {
+      showToast('❌ เกิดข้อผิดพลาด กรุณาลองอีกครั้ง');
+    }
+  } catch (error) {
+    showToast('❌ ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
+  } finally {
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+  }
+}
+
+// ขั้นตอนที่ 2: เปิด Instagram DM ส่งรหัสไปหาร้าน
+function sendDmToShop() {
+  if (!currentVerifyCode || !pendingIgUser) return;
+  const message = 'สวัสดีครับ ยืนยันตัวตนสำหรับเว็บ RONXZ STUDIO\nรหัสยืนยัน: ' + currentVerifyCode + '\nชื่อผู้ใช้: @' + pendingIgUser;
+  
+  navigator.clipboard.writeText(message).then(() => {
+    showToast('📋 คัดลอกข้อความแล้ว! กำลังเปิด Instagram...');
+  }).catch(() => {
+    showToast('⚠️ กรุณาคัดลอกข้อความเอง: ' + currentVerifyCode);
+  });
+  
+  window.open('https://www.instagram.com/ronxz_17k/?hl=en/', '_blank');
+}
+
+// ตรวจสอบว่าเจ้าของร้านอนุมัติแล้วหรือยัง
+async function checkApproval() {
+  if (!pendingIgUser) return;
+
+  const btn = document.getElementById('igVerifyBtn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<span class="loader"></span> กำลังตรวจสอบ...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'checkVerification', username: pendingIgUser })
+    });
+    const data = await res.json();
+
+    if (data.verified) {
+      completeIgLogin();
+    } else {
+      showToast('⏳ ยังไม่ได้รับการอนุมัติ กรุณารอเจ้าของร้านอนุมัติ');
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
+  } catch (error) {
+    showToast('❌ ไม่สามารถตรวจสอบได้ กรุณาลองอีกครั้ง');
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+  }
+}
+
+// เข้าสู่ระบบสำเร็จ
+async function completeIgLogin() {
+  igUser = pendingIgUser;
   localStorage.setItem('ronxz_ig_user', igUser);
-  closeIgLogin();
-  updateAuthUI();
-  showToast('✨ กำลังเข้าสู่ระบบและดึงข้อมูลตะกร้า...');
+
+  document.getElementById('welcomeUsername').textContent = '@' + igUser;
+  document.getElementById('igStep2').classList.add('hidden');
+  document.getElementById('igStep3').classList.remove('hidden');
+  showToast('🎉 เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ @' + igUser);
 
   try {
     const res = await fetch(`${API_URL}?action=getCart&username=${encodeURIComponent(igUser)}`);
     const data = await res.json();
-
-        // 1. ล้างตะกร้าเก่าในเครื่องทิ้งก่อน (เพื่อไม่ให้ของเก่ามารวมกับของใหม่)
-    cart = []; 
-    
-    // 2. ดึงข้อมูลล่าสุดจากเซิร์ฟเวอร์มาใส่
+    cart = [];
     if (data.length > 0 && data[0].cart) {
       cart = data[0].cart.split(',').filter(id => id);
     }
-
-    // 3. บันทึกข้อมูลล่าสุดจากเซิร์ฟเวอร์ลงในเครื่อง
     localStorage.setItem('ronxz_cart', JSON.stringify(cart));
-    updateAuthUI();
-    showToast('✨ เข้าสู่ระบบด้วย IG สำเร็จ! ยินดีต้อนรับ @' + igUser);
-  } catch (error) {
-    showToast('⚠️ ไม่สามารถดึงข้อมูลตะกร้าออนไลน์ได้');
-  }
+  } catch (e) {}
+
+  updateAuthUI();
+
+  setTimeout(() => {
+    closeIgLogin();
+    document.getElementById('igStep1').classList.remove('hidden');
+    document.getElementById('igStep2').classList.add('hidden');
+    document.getElementById('igStep3').classList.add('hidden');
+    document.getElementById('igUsernameInput').value = '';
+  }, 2000);
+
+  pendingIgUser = null;
+  currentVerifyCode = null;
 }
 
-async function syncCartToServer() {
-  if (!igUser) return; 
-  try {
-    await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ 
-        action: 'saveCart', 
-        username: igUser, 
-        cart: cart.join(',') 
-      })
-    });
-  } catch (error) {
-    console.error('Failed to sync cart:', error);
-  }
-}
-
+// ============================================================
+// ADD TO CART — เพิ่มสินค้าลงตะกร้า
+// ============================================================
 async function addToCart() {
   if(!currentProductId) return;
   
   const p = products.find(x => x.id === currentProductId);
-  if(p && p.status === 'sold') {
-    showToast('⚠️ สินค้าชิ้นนี้ขายหมดแล้ว');
+  if(!p) return;
+  
+  if(p.status === 'sold') {
+    showToast('สินค้านี้ขายแล้ว');
     return;
   }
-
+  
+  // ตรวจสอบว่ามีในตะกร้าแล้วหรือยัง
+  if(cart.includes(currentProductId)) {
+    showToast('สินค้านี้อยู่ในตะกร้าแล้ว');
+    return;
+  }
+  
+  // ต้องเข้าสู่ระบบ IG ก่อนถึงจะใช้ตะกร้าข้ามเครื่องได้
   if(!igUser) {
-    showToast('⚠️ กรุณาเข้าสู่ระบบด้วย IG ก่อน');
+    showToast('กรุณาเข้าสู่ระบบ IG ก่อนเพิ่มสินค้าลงตะกร้า');
     openIgLogin();
     return;
   }
+  
   cart.push(currentProductId);
   localStorage.setItem('ronxz_cart', JSON.stringify(cart));
-  showToast('🛒 เพิ่มสินค้าลงตะกร้าแล้ว');
   updateAuthUI();
-  closeModal();
-  await syncCartToServer(); 
+  showToast('เพิ่ม "' + p.name + '" ลงตะกร้าแล้ว!');
+  
+  // ซิงค์ไปเซิร์ฟเวอร์
+  await syncCartToServer();
+}
+
+// ============================================================
+// SYNC CART TO SERVER — บันทึกตะกร้าไป Google Sheet
+// ============================================================
+async function syncCartToServer() {
+  if(!igUser || !USE_API) return;
+  
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        action: 'syncCart',
+        username: igUser,
+        cart: cart
+      })
+    });
+  } catch (e) {
+    console.error('Failed to sync cart:', e);
+  }
 }
 
 function openCart() {
@@ -1666,6 +2230,70 @@ function scrollHorizontally(elementId, direction) {
 loadProducts();
 checkSecretAdminAccess();
 updateAuthUI();
+// ดึงตะกร้าจากเซิร์ฟเวอร์ (ถ้าเคย login ไว้)
+if(igUser && USE_API) {
+  loadCartFromServer();
+}
+
+// ============================================================
+// AUTO-REFRESH — ดึงข้อมูลล่าสุดจาก Google Sheet ทุก 30 วินาที
+// เพื่อให้คนอื่นเห็นการแก้ไขที่คุณทำในชีตทันที
+// ============================================================
+if(USE_API){
+  setInterval(async () => {
+    // ดึงข้อมูลใหม่เฉยๆ โดยไม่รบกวนผู้ใช้ที่กำลังดูอยู่
+    try {
+      const res = await fetch(API_URL);
+      if(!res.ok) return;
+      let data = await res.json();
+      const newProducts = data.map(p => ({
+        id: String(p.id),
+        name: p.name || '',
+        price: Number(p.price) || 0,
+        status: p.status || 'available',
+        category: p.category || 'เสื้อ',
+        size: p.size || '-',
+        condition: p.condition || '-',
+        flaw: p.flaw || '-',
+        desc: p.desc || '',
+        images: p.images ? p.images.split('\n').map(u => u.trim()).filter(u => u) : [],
+        views: Number(p.views) || 0,
+        stock: Number(p.stock) || 1
+      }));
+      // อัปเดตเฉพาะเมื่อข้อมูลเปลี่ยนแปลง
+      if(JSON.stringify(newProducts) !== JSON.stringify(products)){
+        products = newProducts;
+        renderProducts();
+        // ถ้าเปิดแอดมินอยู่ก็อัปเดตด้วย
+        if(!document.getElementById('adminPanel').classList.contains('hidden')){
+          renderAdminList();
+          updateStats();
+          renderTopViewed();
+        }
+      }
+    } catch(e) {
+      // ไม่ต้องแสดง error รบกวนผู้ใช้
+    }
+    
+    // ซิงค์ตะกร้าจากเซิร์ฟเวอร์ (เผื่อเพิ่มจากเครื่องอื่น)
+    if(igUser) {
+      try {
+        const cartRes = await fetch(API_URL + '?action=getCart&username=' + encodeURIComponent(igUser));
+        const cartData = await cartRes.json();
+        if (cartData.length > 0 && cartData[0].cart) {
+          const serverCart = cartData[0].cart.split(',').filter(id => id);
+          // รวมแบบไม่ซ้ำ
+          const merged = [...new Set([...serverCart, ...cart])];
+          if(merged.length !== cart.length) {
+            cart = merged;
+            localStorage.setItem('ronxz_cart', JSON.stringify(cart));
+            updateAuthUI();
+          }
+        }
+      } catch(e) {}
+    }
+  }, 30000); // ทุก 30 วินาที
+}
 </script>
 </body>
 </html>
